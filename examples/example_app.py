@@ -6,8 +6,9 @@ app = Flask(__name__)
 test_list = []
 
 def get_item(index):
-	item = test_list[index]
-	if item is None:
+	try:
+		item = test_list[index]
+	except:
 		return ("Index outside of list", 400)
 
 	return {"item": item, "total": len(test_list)}
@@ -60,11 +61,11 @@ def item_list():
 
 @app.route("/api/item_list/<int:index>", methods=["GET"])
 @set_description("These don't work yet :c")
-def get_item(index):
+def get_item_req(index):
 	return get_item(index)
 
 @app.route("/api/test", methods=["POST"])
-@set_args(POST={"key": int})
+@set_args(POST={"key": float})
 @set_description("Here's a description")
 def print_num_plus_1():
 	json = request.get_json()

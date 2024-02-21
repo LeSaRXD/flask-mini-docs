@@ -20,11 +20,17 @@ let send_request = async (button) => {
 		},
 		method: button.dataset.method,
 	};
+
+	for (let arg_input of button.parentElement.querySelectorAll(".arg-input[data-arg-position='url']")) {
+		let val = arg_input.value || null;
+		if (val && arg_input.dataset.type == "bool") val = arg_input.checked;
+		url = url.replace(`<${arg_input.dataset.type}:${arg_input.dataset.arg}>`, val.toString());
+	}
+
 	if (method !== "GET") {
 		let body = {};
-		for (let arg_input of button.parentElement.querySelectorAll(".arg-input")) {
+		for (let arg_input of button.parentElement.querySelectorAll(".arg-input[data-arg-position='body']")) {
 			let val = arg_input.value || null;
-			console.log(arg_input.dataset.type);
 			if (val) {
 				if (arg_input.dataset.type == "int") val = parseInt(val);
 				else if (arg_input.dataset.type == "float") val = parseFloat(val);
@@ -44,7 +50,6 @@ let send_request = async (button) => {
 	let text = await res.text();
 	try {
 		let json = JSON.parse(text);
-		console.log(json);
 		res_div.innerText += `\n\n${JSON.stringify(json, null, 4)}`;
 	} catch (e) {
 		if (text.length > 0)

@@ -12,6 +12,7 @@ body {
 #header {
 	width: 100%;
 	padding: 1rem;
+	box-sizing: border-box;
 }
 #header > * {
 	margin: 0;
@@ -100,6 +101,8 @@ body {
 	font-size: 1.2rem;
 	font-family: monospace;
 	background-color: #ddd;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 
 	display: none;
 }

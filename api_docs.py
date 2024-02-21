@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import re
 
 args = {}
 descriptions = {}
@@ -19,23 +20,37 @@ def add_api_docs(app: Flask, base_url: str = "/api"):
 	api_requests = []
 
 	for rule in app.url_map.iter_rules():
-		if not str(rule).startswith(base_url):
+		rule_url = str(rule)
+		if not rule_url.startswith(base_url):
 			continue
+
 		if "HEAD" in rule.methods:
 			rule.methods.remove("HEAD")
 		if "OPTIONS" in rule.methods:
 			rule.methods.remove("OPTIONS")
+		
 		for method in rule.methods:
-			endpoint_args = args.get(rule.endpoint, {})
-			current_args = endpoint_args.get(method, {})
-
-			if (isinstance(current_args, list)):
-				current_args = {key: str for key in current_args}
-			current_args = {key: value.__name__ for (key, value) in current_args.items()}
-
 			current_desc = descriptions.get(rule.endpoint, None)
 
-			api_requests.append({"url": str(rule), "method": method, "args": current_args, "description": current_desc})
+			endpoint_args = args.get(rule.endpoint, {})
+			body_args = endpoint_args.get(method, {})
+
+			if (isinstance(body_args, list)):
+				body_args = {key: "str" for key in body_args}
+			else:
+				body_args = {key: value.__name__ for (key, value) in body_args.items()}
+
+			url_args = {}
+			for match in re.finditer(r"<(\w+):(\w+)>", rule_url):
+				url_args[match[2]] = match[1]
+
+			api_requests.append({
+				"url": str(rule),
+				"method": method,
+				"body_args": body_args,
+				"url_args": url_args,
+				"description": current_desc
+			})
 
 	@app.route(f"{base_url}/docs")
 	def docs():

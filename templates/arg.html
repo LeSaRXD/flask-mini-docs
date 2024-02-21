@@ -1,0 +1,21 @@
+<div class="request-arg">
+	<p>{{ arg_type }} {{ arg }}: </p>
+	
+	<input
+	{% if arg_type == "int" %}
+	type="text"
+		onfocus="this.previousValue = this.value"
+		onkeydown="this.previousValue = this.value"
+		oninput="value.match(/^-?\d*$/)?.[0] == value || (value = this.previousValue)"
+	{% elif arg_type == "float" %}
+		type="text"
+		onfocus="this.previousValue = this.value"
+		onkeydown="this.previousValue = this.value"
+		oninput="value.match(/^-?\d*(\.\d*)?$/)?.[0] == value || (value = this.previousValue)"
+	{% elif arg_type == "bool" %}
+		type="checkbox"
+	{% else %}
+		type="text"
+	{% endif %}
+	class="arg-input" data-arg-position="{{ arg_position }}" data-type="{{ arg_type }}" data-arg="{{ arg }}" placeholder="{{ arg }}">
+</div>
