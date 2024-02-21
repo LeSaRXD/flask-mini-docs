@@ -1,0 +1,55 @@
+:root {
+	--collapse-icon-width: 1.2rem;
+}
+
+.collapse {
+	width: 100%;
+}
+.collapse-title {
+	--title-padding: 1rem;
+	position: relative;
+	width: 100%;
+	padding: var(--title-padding);
+	padding-right: calc(var(--title-padding) + var(--collapse-icon-width));
+	box-sizing: border-box;
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	gap: 0.5rem;
+}
+
+/* arrow */
+.collapse-title::after {
+	content: "▶";
+	position: absolute;
+	right: calc(var(--collapse-icon-width) / 2);
+	bottom: calc(var(--collapse-icon-width) / 2);
+	height: var(--collapse-icon-width);
+	aspect-ratio: 1;
+	line-height: var(--collapse-icon-width);
+	font-size: 1rem;
+	text-align: center;
+	cursor: pointer;
+	transition-duration: 0.2s;
+	transform: rotate(90deg);
+}
+.collapsed .collapse-title::after {
+	transform: rotate(180deg);
+}
+
+/* body */
+.collapse .collapse-body {
+	box-sizing: border-box;
+	width: 100%;
+}
+.collapse.collapsed .collapse-body {
+	display: none;
+}
+.collapse-body .body-container {
+	width: 100%;
+	height: 100%;
+	padding: 0.5rem;
+	box-sizing: border-box;
+}

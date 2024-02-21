@@ -1,0 +1,152 @@
+@import url("./collapsable.css");
+
+body {
+	background-color: #eee;
+	color: #000;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+
+/* header */
+#header {
+	width: 100%;
+	padding: 1rem;
+}
+#header > * {
+	margin: 0;
+}
+#powered-by {
+	color: #666;
+}
+
+/* container */
+#requests-container {
+	width: 100%;
+	padding: 1rem;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: start;
+	gap: 1rem;
+}
+
+/* methods */
+.method {
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+.get-method {
+	color: #3491ee;
+}
+.post-method {
+	color: #2dc480;
+}
+.put-method {
+	color: #ec8910;
+}
+.patch-method {
+	color: #9012fe;
+}
+.delete-method {
+	color: #f12525;
+}
+
+.request-url {
+	font-size: 1.25rem;
+	color: #333;
+}
+
+/* buttons */
+.request-button {
+	font-size: 1.4rem;
+	padding: 0.5rem;
+	border-radius: 1rem;
+	font-weight: 700;
+	border: none;
+	cursor: pointer;
+}
+
+.send-request {
+	background-color: #4a4;
+	color: #fff;
+}
+.send-request:hover {
+	background-color: #6b6;
+}
+.send-request:active {
+	background-color: #7c6;
+}
+
+.clear-request {
+	background-color: #a44;
+	color: #fff;
+}
+.clear-request:hover {
+	background-color: #b66;
+}
+.clear-request:active {
+	background-color: #c76;
+}
+
+/* response pre */
+.response {
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0.5rem 0 0 0;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	font-size: 1.2rem;
+	font-family: monospace;
+	background-color: #ddd;
+
+	display: none;
+}
+
+/* arguments */
+.request-arg {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	gap: 0.5rem;
+	font-size: 1.2rem;
+}
+.arg-input {
+	border: 1px solid #222;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	background: #eee;
+	font-size: inherit;
+}
+.args-text {
+	margin: 0.25rem;
+}
+
+/* descriptions */
+.description {
+	font-size: 1.2rem;
+}
+
+/* circular borders */
+.border {
+	--border: 2px solid #111;
+	--radius: 1rem;
+}
+.border > *:first-child {
+	border: var(--border);
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+}
+.border > *:last-child {
+	border-radius: 0 0 var(--radius) var(--radius);
+}
+.collapsed.border > *:nth-last-child(2) {
+	border-bottom-left-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
+}
+.border > * {
+	border: var(--border);
+	border-top: none;
+}

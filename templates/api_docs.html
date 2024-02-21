@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ name or "API documentation" }}</title>
+	<link rel="stylesheet" href="/static/docs/css/style.css">
+</head>
+<body>
+	<div id="header">
+		<h1>{{ name or "API documentation" }}</h1>
+		<p id="powered-by">powered by flask-mini-docs</p>
+	</div>
+
+	<div id="requests-container">
+		{% for api_req in api_requests %}
+
+		<div class="collapse collapsed border">
+			<div class="collapse-title" tabindex="0">
+				<div class="method {{ api_req.method | lower }}-method">{{ api_req.method }}</div>
+				<div class="request-url">{{ api_req.url }}</div>
+			</div>
+			<div class="collapse-body">
+				<div class="body-container">
+					{% if api_req.description %}
+					<p class="description">{{ api_req.description }}</p>
+					{% endif %}
+
+					{% if api_req.args | length > 0 %}
+					<h3 class="args-text">Request body arguments:</h3>
+					{% endif %}
+					{% for arg in api_req.args %}
+					{% set arg_type = api_req.args[arg] %}
+					<div class="request-arg">
+						<p>{{ arg_type }} {{ arg }}: </p>
+						
+						<input
+						{% if arg_type == "int" %}
+							type="text"
+							onfocus="this.previousValue = this.value"
+							onkeydown="this.previousValue = this.value"
+							oninput="value.match(/^-?\d*$/)?.[0] == value || (value = this.previousValue)"
+						{% elif arg_type == "float" %}
+							type="text"
+							onfocus="this.previousValue = this.value"
+							onkeydown="this.previousValue = this.value"
+							oninput="value.match(/^-?\d*(\.\d*)?$/)?.[0] == value || (value = this.previousValue)"
+						{% elif arg_type == "bool" %}
+							type="checkbox"
+						{% else %}
+							type="text"
+						{% endif %}
+						class="arg-input" data-type="{{ arg_type }}" data-arg="{{ arg }}" placeholder="{{ arg }}">
+					</div>
+					{% endfor %}
+					
+					<button class="send-request request-button" data-url="{{ api_req.url }}" data-method="{{ api_req.method }}" onclick="send_request(this)">Send request</button>
+					<button class="clear-request request-button" onclick="clear_request(this)">Clear</button>
+					
+					<pre class="response"></pre>
+				</div>
+			</div>
+		</div>
+
+		{% endfor %}
+	</div>
+
+	<script src="/static/docs/js/index.js"></script>
+</body>
+</html>
