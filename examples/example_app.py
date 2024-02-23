@@ -60,7 +60,7 @@ def item_list():
 		return rename_item(request.get_json())
 
 @app.route("/api/item_list/<int:index>", methods=["GET"])
-@set_description("These don't work yet :c")
+@set_description("These work now c:")
 def get_item_req(index):
 	return get_item(index)
 
@@ -73,5 +73,6 @@ def print_num_plus_1():
 	return f"{float(json.get('key', 0)) + 1}"
 
 if __name__ == "__main__":
-	add_api_docs(app)
+	if not add_api_docs(app):
+		print("Couldn't load API docs")
 	app.run(debug=True)

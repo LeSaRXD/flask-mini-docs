@@ -24,7 +24,11 @@ let send_request = async (button) => {
 	for (let arg_input of button.parentElement.querySelectorAll(".arg-input[data-arg-position='url']")) {
 		let val = arg_input.value || null;
 		if (val && arg_input.dataset.type == "bool") val = arg_input.checked;
-		url = url.replace(`<${arg_input.dataset.type}:${arg_input.dataset.arg}>`, val.toString());
+		let new_url = url.replace(`<${arg_input.dataset.type}:${arg_input.dataset.arg}>`, val.toString());
+		if (new_url === url) {
+			new_url = url.replace(`<${arg_input.dataset.arg}>`, val.toString());
+		}
+		url = new_url
 	}
 
 	if (method !== "GET") {

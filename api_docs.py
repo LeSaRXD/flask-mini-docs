@@ -16,7 +16,10 @@ def set_description(description):
 		return func
 	return inner
 
-def add_api_docs(app: Flask, base_url: str = "/api"):
+def add_api_docs(app: Flask, base_url: str = "/api") -> bool:
+	if not base_url.startswith("/"):
+		return False
+
 	api_requests = []
 
 	for rule in app.url_map.iter_rules():
@@ -41,8 +44,10 @@ def add_api_docs(app: Flask, base_url: str = "/api"):
 				body_args = {key: value.__name__ for (key, value) in body_args.items()}
 
 			url_args = {}
-			for match in re.finditer(r"<(\w+):(\w+)>", rule_url):
+			for match in re.finditer(r"<([^:]+):([^:]+)>", rule_url):
 				url_args[match[2]] = match[1]
+			for match in re.finditer(r"<([^:]+)>", rule_url):
+				url_args[match[1]] = "str"
 
 			api_requests.append({
 				"url": str(rule),
@@ -52,6 +57,8 @@ def add_api_docs(app: Flask, base_url: str = "/api"):
 				"description": current_desc
 			})
 
-	@app.route(f"{base_url}/docs")
+	@app.route(f"{base_url if len(base_url) > 1 else ''}/docs")
 	def docs():
 		return render_template("api_docs.html", api_requests=api_requests, name=f"{base_url} documentation")
+
+	return True
